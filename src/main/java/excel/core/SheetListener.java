@@ -41,6 +41,7 @@ public class SheetListener implements ReadListener<Map<Integer, String>> {
             consumer.accept(sheetData);
         } else {
             sheetData = new SheetData(log, excelName);
+            sheetData.setSheetName(context.readSheetHolder().getSheetName());
             Map<Integer, String> head = new HashMap<>();
             for (Map.Entry<Integer, ReadCellData<?>> entry : headMap.entrySet()) {
                 head.put(entry.getKey(), entry.getValue().getStringValue());

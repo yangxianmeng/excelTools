@@ -7,6 +7,7 @@ import java.util.Properties;
 
 import excel.core.IConfig;
 import excel.core.SheetData;
+import excel.gen.json.Conf;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
@@ -17,17 +18,23 @@ import log.AbstractLog;
  * @author Yxm
  */
 public abstract class AutoBase implements IConfig {
-
+    /** 页签数据合并标识  */
+    public static final String COMBINE_IDENTIFY = "\\$";
+    /** 页签数据合并标识  */
+    public static final String CONTAIN_COMBINE_IDENTIFY = "$";
     /** 日志对象 */
     protected AbstractLog log;
     /** 配置文件 */
     protected Properties properties;
     /** 模板文件 */
     protected Template template;
+    /** 配置文件 */
+    private Conf conf;
 
     public AutoBase(AbstractLog log, Properties properties) {
         this.log = log;
         this.properties = properties;
+        this.conf = new Conf();
     }
 
     public void startup() {
@@ -35,7 +42,10 @@ public abstract class AutoBase implements IConfig {
         String name = this.getClass().getName();
         log.info(String.format("-----------> 开始生成：文件【%s】", name));
         long l1 = System.currentTimeMillis();
-        initProperties();
+        if (!initProperties()) {
+            log.info(String.format("文件【%s】 配置加载失败!", name));
+            return;
+        }
         if (loadConfig()) {
             gen();
             log.info(String.format("-----------> 文件【%s】完成。 \n" +
@@ -46,7 +56,7 @@ public abstract class AutoBase implements IConfig {
         }
     }
 
-    protected abstract void initProperties();
+    protected abstract boolean initProperties();
 
     /**
      * 加载配置文件

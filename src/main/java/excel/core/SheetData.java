@@ -26,6 +26,7 @@ public class SheetData {
     private String sheetName;
     /** 每一行数据 */
     private List<JSONObject> dataList = new ArrayList<>();
+    private List<Map<Integer, String>> testList = new ArrayList<>();
     /** 第一行头文件 */
     private Map<Integer, ColumnInfo> columnInfos = new LinkedHashMap<>();
     /** 是否异常 */
@@ -88,6 +89,7 @@ public class SheetData {
             getLog().addErrorFile(excelName);
             isException = true;
         }
+        testList.add(data);
     }
     public AbstractLog getLog() {
         return log;
@@ -229,4 +231,11 @@ public class SheetData {
         dataList.add(jo);
     }
 
+    public List<JSONObject> getDataList() {
+        return dataList;
+    }
+
+    public List<Map<Integer, String>> getTestList() {
+        return testList;
+    }
 }

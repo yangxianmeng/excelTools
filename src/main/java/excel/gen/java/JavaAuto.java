@@ -3,6 +3,7 @@ package excel.gen.java;
 import java.util.Properties;
 
 import excel.AutoBase;
+import excel.ExcelPoi;
 import excel.core.SheetData;
 import log.AbstractLog;
 
@@ -19,8 +20,15 @@ public class JavaAuto extends AutoBase {
     }
 
     @Override
-    protected void initProperties() {
+    protected boolean initProperties() {
+        templateName = properties.getProperty("java_template_name");
+        return true;
+    }
 
+    @Override
+    protected void gen() {
+        super.gen();
+        new ExcelPoi(this, null).run();
     }
 
     @Override
